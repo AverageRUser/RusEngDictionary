@@ -19,7 +19,7 @@ namespace RusEngDictionary
         MySqlConnection conn = new MySqlConnection(connStr);
         public ObservableCollection<DictionaryER> items { get; set; }
         private RelayCommand addCommand;     
-        private RelayCommand searchCommand;
+        
         string _pattern;
         //Метод для получения и установки _pattern
         public string Pattern
@@ -90,7 +90,7 @@ namespace RusEngDictionary
             };
             view = (CollectionView)CollectionViewSource.GetDefaultView(items);
             view.SortDescriptions.Add(new SortDescription("Word", ListSortDirection.Ascending));
-            //  items = new ObservableCollection<DictionaryER>(items.OrderBy(i => i.Word));
+           
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
