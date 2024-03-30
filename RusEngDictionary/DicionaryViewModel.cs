@@ -76,26 +76,7 @@ namespace RusEngDictionary
             }
        
         }
-        /*
-        public RelayCommand Search
-        {            get
-            {
-                return searchCommand ??
-                    (searchCommand = new RelayCommand(obj =>
-                    {
-                 foreach(var i in items)
-                        {
-                           if(i.Word == "")
-                            {
-                              //  view.;
-                            }
-                        }
-                       
-                        
-                    }));
-            }
-        }
-        */
+        
         public DicionaryViewModel()
         {
             conn.Open();
