@@ -24,11 +24,10 @@
             </ListView.View>
 
         </ListView>
-
         <Menu Height="20" VerticalAlignment="Top" Margin="0,1,0,0" >
             <MenuItem Header="Меню">
-                <MenuItem Header="Загрузить из базы данных" Command="{Binding AddCommand}" />
-               
+                <MenuItem Header="Добавить в словарь" Command="{Binding AddCommand}" Click="MenuItem_Click" />
+                <MenuItem Header="Удалить из словаря" Command="{Binding RemoveCommand}" Click="MenuItem_Click" />
             </MenuItem>
             <TextBox Width="249" Text="{Binding Pattern, UpdateSourceTrigger=PropertyChanged}" >
                 <TextBox.Style>
