@@ -23,15 +23,7 @@ namespace RusEngDictionary
      
         private RelayCommand addCommand;
         private RelayCommand removeCommand;
-        string _name;
-        public string Name
-        {
-            get => _name;
-            set
-            {
-            Set(ref _name, value);
-            }
-        }
+      
         string _pattern;
         //Свойство для получения и установки _pattern
         public string Pattern
@@ -91,12 +83,16 @@ namespace RusEngDictionary
                 return removeCommand ??
                   (removeCommand = new RelayCommand(obj =>
                   {
-                     
-                    
-                       
+
+                   //   string query = $"DELETE FROM users WHERE id = {Ids[items.SelectedIndex]}";
+                      //  string query2 = $"UPDATE users SET id = id - 1 where id > {usersList.SelectedIndex + 1}";
+                  //    MySqlCommand command = new MySqlCommand(query, conn);
+                  //    command.ExecuteNonQuery();
+                      usersList.Items.RemoveAt(usersList.SelectedIndex);
 
 
-                      
+
+
                   }));
             }
 
