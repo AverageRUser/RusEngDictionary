@@ -15,10 +15,10 @@ namespace RusEngDictionary
 {
     public class DicionaryViewModel : INotifyPropertyChanged
     {
-        static string connStr = "server=localhost;user=root;database=dictionaryEngRus;password=L3200631sq#;";
+        static string connStr = "server=localhost;user=root;database=dictionaryEngRus;password=yourpass;";
         CollectionView view;
           MySqlConnection conn = new MySqlConnection(connStr);
-      //  MySqlConnection conn;
+ 
         public ObservableCollection<DictionaryER> items { get; set; }
      
         private RelayCommand addCommand;
