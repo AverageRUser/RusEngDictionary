@@ -23,13 +23,13 @@ namespace RusEngDictionary
      
         private RelayCommand addCommand;
         private RelayCommand removeCommand;
-        string _password;
-        public string Password
+        string _name;
+        public string Name
         {
-            get => _password;
+            get => _name;
             set
             {
-            Set(ref _password, value);
+            Set(ref _name, value);
             }
         }
         string _pattern;
@@ -67,9 +67,18 @@ namespace RusEngDictionary
                 return addCommand ??
                   (addCommand = new RelayCommand(obj =>
                   {
-                      WindowDatabaseEntry wde = new WindowDatabaseEntry();
-                      wde.Show();
-                   
+                      WindowEntry wde = new WindowEntry(new DictionaryER());
+                      if (wde.ShowDialog() == true)
+                      {
+                          DictionaryER DictionaryObj = wde.DictionaryObj;
+
+                          string query = $"INSERT INTO dictionaryER (Word,Translation,Definition) VALUES ('{DictionaryObj.Word}', {DictionaryObj.Translation},{DictionaryObj.Definition})";
+                          MySqlCommand command = new MySqlCommand(query, conn);
+                          command.ExecuteNonQuery();
+                          items.Add(DictionaryObj);
+
+                      }
+
                   }));
             }
        

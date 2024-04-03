@@ -15,14 +15,21 @@ using System.Windows.Shapes;
 namespace RusEngDictionary
 {
     /// <summary>
-    /// Логика взаимодействия для WindowDatabaseEntry.xaml
+    /// Логика взаимодействия для WindowEntry.xaml
     /// </summary>
-    public partial class WindowDatabaseEntry : Window
+    public partial class WindowEntry : Window
     {
-        public WindowDatabaseEntry()
+        public DictionaryER DictionaryObj { get; private set; }
+        public WindowEntry(DictionaryER dictionaryObj)
         {
             InitializeComponent();
-            DataContext = new DicionaryViewModel();
+            DictionaryObj = dictionaryObj;
+            DataContext = DictionaryObj;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
         }
     }
 }
