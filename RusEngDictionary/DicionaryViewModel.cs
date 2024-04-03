@@ -64,7 +64,7 @@ namespace RusEngDictionary
                       {
                           DictionaryER DictionaryObj = wde.DictionaryObj;
 
-                          string query = $"INSERT INTO dictionaryER (Word,Translation,Definition) VALUES ('{DictionaryObj.Word}', {DictionaryObj.Translation},{DictionaryObj.Definition})";
+                          string query = $"INSERT dictionaryER (Word,Translation,Definitions) VALUES ('{DictionaryObj.Word}', '{DictionaryObj.Translation}','{DictionaryObj.Definition}')";
                           MySqlCommand command = new MySqlCommand(query, conn);
                           command.ExecuteNonQuery();
                           items.Add(DictionaryObj);
@@ -83,17 +83,22 @@ namespace RusEngDictionary
                 return removeCommand ??
                   (removeCommand = new RelayCommand(obj =>
                   {
-
-                   //   string query = $"DELETE FROM users WHERE id = {Ids[items.SelectedIndex]}";
-                      //  string query2 = $"UPDATE users SET id = id - 1 where id > {usersList.SelectedIndex + 1}";
-                  //    MySqlCommand command = new MySqlCommand(query, conn);
-                  //    command.ExecuteNonQuery();
-                      usersList.Items.RemoveAt(usersList.SelectedIndex);
-
-
+                
+                      if (items.Count != 0)
+                      {
+                          string query = $"DELETE FROM dictionaryER WHERE Word = '{_selected.Word}'";                       
+                          MySqlCommand command = new MySqlCommand(query, conn);
+                          command.ExecuteNonQuery();
+                          items.RemoveAt(_selected.Id);
+                      }
+                      else
+                      {
+                          MessageBox.Show("Нет элементов в списке");
+                      }
 
 
                   }));
+                
             }
 
         }
@@ -103,12 +108,14 @@ namespace RusEngDictionary
           
             items = new ObservableCollection<DictionaryER>
             {
-                new DictionaryER() { Word = "Ball", Translation = "Мяч" ,Id = 0},
-                new DictionaryER() { Word = "Candy", Translation = "Конфета", Id = 1 },
-                new DictionaryER() { Word = "Album", Translation = "Альбом", Id =2 }
+              //  new DictionaryER() { Word = "Ball", Translation = "Мяч" ,Id = 0},
+               // new DictionaryER() { Word = "Candy", Translation = "Конфета", Id = 1 },
+               // new DictionaryER() { Word = "Album", Translation = "Альбом", Id =2 }
 
             };
-            int i = 3;
+          
+            int i = 0;
+          
             string sql = "SELECT * FROM dictionaryER";
             // объект для выполнения SQL-запроса
             MySqlCommand command1 = new MySqlCommand(sql, conn);

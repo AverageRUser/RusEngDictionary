@@ -41,9 +41,6 @@ namespace RusEngDictionary
             listBox.ScrollIntoView(listBox.SelectedItem);
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+      
     }
 }
