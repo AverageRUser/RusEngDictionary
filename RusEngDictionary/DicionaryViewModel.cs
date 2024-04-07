@@ -15,16 +15,18 @@ namespace RusEngDictionary
 {
     public class DicionaryViewModel : INotifyPropertyChanged
     {
-        static string connStr = "server=localhost;user=root;database=dictionaryEngRus;password=yourpass;";
+        static string connStr;
         CollectionView view;
-          MySqlConnection conn = new MySqlConnection(connStr);
+        MySqlConnection conn;
  
         public ObservableCollection<DictionaryER> items { get; set; }
      
         private RelayCommand addCommand;
         private RelayCommand removeCommand;
-      
+        private RelayCommand dictconnCommand;
         string _pattern;
+        string databaseTableName;
+   
         //Свойство для получения и установки _pattern
         public string Pattern
         {
@@ -86,6 +88,7 @@ namespace RusEngDictionary
                 
                       if (items.Count != 0)
                       {
+
                           string query = $"DELETE FROM dictionaryER WHERE Word = '{_selected.Word}'";                       
                           MySqlCommand command = new MySqlCommand(query, conn);
                           command.ExecuteNonQuery();
@@ -102,35 +105,59 @@ namespace RusEngDictionary
             }
 
         }
+        public RelayCommand DictConnCommand
+        {
+            get
+            {
+
+                return dictconnCommand ??
+                  (dictconnCommand = new RelayCommand(obj =>
+                  {
+
+                      WindowDBentry wdbe = new WindowDBentry();
+                      if (wdbe.ShowDialog() == true)
+                      {
+                          //  DictionaryER DictionaryObj = wdbe.DictionaryObj;
+                          connStr = $"server=localhost;user=root;database={wdbe.databaseName.Text};password={wdbe.password.Text};";
+                          conn = new MySqlConnection(connStr);
+                          conn.Open();
+                          databaseTableName = wdbe.nameTable.Text;
+                          int i = 0;
+
+                          string sql = $"SELECT * FROM {databaseTableName}";
+                          // объект для выполнения SQL-запроса
+                          MySqlCommand command1 = new MySqlCommand(sql, conn);
+                          // объект для чтения ответа сервера
+                          MySqlDataReader reader = command1.ExecuteReader();
+                          // читаем результат
+                          while (reader.Read())
+                          {
+                              // элементы массива [] - это значения столбцов из запроса SELECT
+                              items.Add(new DictionaryER() { Id = i, Word = reader[1].ToString(), Translation = reader[2].ToString(), Definition = reader[3].ToString() });
+                              i++;
+                              //(reader[0].ToString() + " " + reader[1].ToString() + " " + reader[2].ToString());
+                          }
+
+                          reader.Close(); // закрываем reader
+                      }
+
+                  }));
+
+            }
+
+        }
         public DicionaryViewModel()
         {
-           conn.Open();
-          
+     
             items = new ObservableCollection<DictionaryER>
             {
-              //  new DictionaryER() { Word = "Ball", Translation = "Мяч" ,Id = 0},
-               // new DictionaryER() { Word = "Candy", Translation = "Конфета", Id = 1 },
-               // new DictionaryER() { Word = "Album", Translation = "Альбом", Id =2 }
+                new DictionaryER() { Word = "Ball", Translation = "Мяч" ,Id = 0},
+                new DictionaryER() { Word = "Candy", Translation = "Конфета", Id = 1 },
+                new DictionaryER() { Word = "Album", Translation = "Альбом", Id =2 }
 
             };
           
-            int i = 0;
-          
-            string sql = "SELECT * FROM dictionaryER";
-            // объект для выполнения SQL-запроса
-            MySqlCommand command1 = new MySqlCommand(sql, conn);
-            // объект для чтения ответа сервера
-            MySqlDataReader reader = command1.ExecuteReader();
-            // читаем результат
-            while (reader.Read())
-            {
-                // элементы массива [] - это значения столбцов из запроса SELECT
-                items.Add(new DictionaryER() { Id = i, Word = reader[1].ToString(), Translation = reader[2].ToString(), Definition = reader[3].ToString() });
-                i++;
-                //(reader[0].ToString() + " " + reader[1].ToString() + " " + reader[2].ToString());
-            }
-
-            reader.Close(); // закрываем reader
+           
 
             view = (CollectionView)CollectionViewSource.GetDefaultView(items);
             view.SortDescriptions.Add(new SortDescription("Word", ListSortDirection.Ascending));
