@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -15,9 +16,9 @@ namespace RusEngDictionary
 {
     public class DicionaryViewModel : INotifyPropertyChanged
     {
-        static string connStr;
+        static string connStr = null;
         CollectionView view;
-        MySqlConnection conn;
+        MySqlConnection conn = new MySqlConnection(connStr);
  
         public ObservableCollection<DictionaryER> items { get; set; }
      
@@ -61,15 +62,25 @@ namespace RusEngDictionary
                 return addCommand ??
                   (addCommand = new RelayCommand(obj =>
                   {
+
                       WindowEntry wde = new WindowEntry(new DictionaryER());
+                      
                       if (wde.ShowDialog() == true)
                       {
-                          DictionaryER DictionaryObj = wde.DictionaryObj;
+                          if (conn.Ping() == true && connStr != null)
+                          {
+                              DictionaryER DictionaryObj = wde.DictionaryObj;
 
-                          string query = $"INSERT dictionaryER (Word,Translation,Definitions) VALUES ('{DictionaryObj.Word}', '{DictionaryObj.Translation}','{DictionaryObj.Definition}')";
-                          MySqlCommand command = new MySqlCommand(query, conn);
-                          command.ExecuteNonQuery();
-                          items.Add(DictionaryObj);
+                              string query = $"INSERT {databaseTableName} (Word,Translation,Definitions) VALUES ('{DictionaryObj.Word}', '{DictionaryObj.Translation}','{DictionaryObj.Definition}')";
+                              MySqlCommand command = new MySqlCommand(query, conn);
+                              command.ExecuteNonQuery();
+                              items.Add(DictionaryObj);
+                          }
+                          else
+                          {
+                              DictionaryER DictionaryObj = wde.DictionaryObj;
+                              items.Add(DictionaryObj);
+                          }
 
                       }
 
@@ -88,11 +99,17 @@ namespace RusEngDictionary
                 
                       if (items.Count != 0)
                       {
-
-                          string query = $"DELETE FROM dictionaryER WHERE Word = '{_selected.Word}'";                       
-                          MySqlCommand command = new MySqlCommand(query, conn);
-                          command.ExecuteNonQuery();
-                          items.RemoveAt(_selected.Id);
+                          if (conn.State == ConnectionState.Open && connStr != null)
+                          {
+                              string query = $"DELETE FROM dictionaryER WHERE Word = '{_selected.Word}'";
+                              MySqlCommand command = new MySqlCommand(query, conn);
+                              command.ExecuteNonQuery();
+                              items.RemoveAt(_selected.Id);
+                          }
+                          else
+                          {
+                              items.RemoveAt(_selected.Id);
+                          }
                       }
                       else
                       {
@@ -122,7 +139,7 @@ namespace RusEngDictionary
                           conn = new MySqlConnection(connStr);
                           conn.Open();
                           databaseTableName = wdbe.nameTable.Text;
-                          int i = 0;
+                          int i = 3;
 
                           string sql = $"SELECT * FROM {databaseTableName}";
                           // объект для выполнения SQL-запроса

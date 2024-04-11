@@ -27,7 +27,7 @@
         <Menu Height="20" VerticalAlignment="Top" Margin="0,1,0,0" >
             <MenuItem Header="Меню">
                 <MenuItem Header="Добавить в словарь" Command="{Binding AddCommand}"  />
-                <MenuItem Header="Удалить из словаря" Command="{Binding RemoveCommand, UpdateSourceTrigger=PropertyChanged}" />
+                <MenuItem Header="Удалить из словаря" Command="{Binding RemoveCommand}" />
                 <MenuItem Header="Подключение к словарю через базу данных" Command="{Binding DictConnCommand}" />
 
             </MenuItem>

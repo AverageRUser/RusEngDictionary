@@ -22,7 +22,7 @@ namespace RusEngDictionary
         public WindowDBentry()
         {
             InitializeComponent();
-            DataContext = new DicionaryViewModel();
+          
             
         }
         private void Button_Click(object sender, RoutedEventArgs e)
