@@ -101,7 +101,7 @@ namespace RusEngDictionary
                       {
                           if (conn.State == ConnectionState.Open && connStr != null)
                           {
-                              string query = $"DELETE FROM {databaseTableName} WHERE Word = '{_selected.Word}'";
+                              string query = $"DELETE FROM dictionaryER WHERE Word = '{_selected.Word}'";
                               MySqlCommand command = new MySqlCommand(query, conn);
                               command.ExecuteNonQuery();
                               items.RemoveAt(_selected.Id);
