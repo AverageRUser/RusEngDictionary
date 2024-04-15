@@ -24,7 +24,7 @@
             </ListView.View>
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Name="Add" Header="Добавить в избранное" Command="{Binding AddCommand}"  >
+                    <MenuItem Header="Добавить в избранное" Command="{Binding FavorCommand}"  >
                         <MenuItem.Icon>
                             <TextBlock Text="*" />
                         </MenuItem.Icon>

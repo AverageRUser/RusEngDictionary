@@ -25,6 +25,7 @@ namespace RusEngDictionary
         private RelayCommand addCommand;
         private RelayCommand removeCommand;
         private RelayCommand dictconnCommand;
+        private RelayCommand favorCommand;
         string _pattern;
         string databaseTableName;
    
@@ -53,6 +54,21 @@ namespace RusEngDictionary
             field = value;
 
            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        public RelayCommand FavorCommand
+        {
+            get
+            {
+
+                return favorCommand ??
+                  (favorCommand = new RelayCommand(obj =>
+                  {
+
+                     
+
+                  }));
+            }
+
         }
         public RelayCommand AddCommand
         {
