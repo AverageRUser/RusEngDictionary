@@ -22,7 +22,17 @@
 
                 </GridView>
             </ListView.View>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Name="Add" Header="Добавить в избранное" Command="{Binding AddCommand}"  >
+                        <MenuItem.Icon>
+                            <TextBlock Text="*" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                   
 
+                </ContextMenu>
+            </ListView.ContextMenu>
         </ListView>
         <Menu Height="20" VerticalAlignment="Top" Margin="0,1,0,0" >
             <MenuItem Header="Меню">
