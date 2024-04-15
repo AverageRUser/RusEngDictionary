@@ -26,6 +26,7 @@ namespace RusEngDictionary
         private RelayCommand removeCommand;
         private RelayCommand dictconnCommand;
         private RelayCommand favorCommand;
+        private RelayCommand unfavorCommand;
         string _pattern;
         string databaseTableName;
    
@@ -63,8 +64,24 @@ namespace RusEngDictionary
                 return favorCommand ??
                   (favorCommand = new RelayCommand(obj =>
                   {
-
+                      items[_selected.Id].IsFavorite = true;
                      
+
+                  }));
+            }
+
+        }
+        public RelayCommand UnFavorCommand
+        {
+            get
+            {
+
+                return unfavorCommand ??
+                  (unfavorCommand = new RelayCommand(obj =>
+                  {
+                      items[_selected.Id].IsFavorite = false;
+                      
+
 
                   }));
             }
@@ -166,7 +183,7 @@ namespace RusEngDictionary
                           while (reader.Read())
                           {
                               // элементы массива [] - это значения столбцов из запроса SELECT
-                              items.Add(new DictionaryER() { Id = i, Word = reader[1].ToString(), Translation = reader[2].ToString(), Definition = reader[3].ToString() });
+                              items.Add(new DictionaryER() { IsFavorite = false, Word = reader[1].ToString(), Translation = reader[2].ToString(), Definition = reader[3].ToString() });
                               i++;
                               //(reader[0].ToString() + " " + reader[1].ToString() + " " + reader[2].ToString());
                           }
@@ -193,8 +210,9 @@ namespace RusEngDictionary
            
 
             view = (CollectionView)CollectionViewSource.GetDefaultView(items);
+            view.SortDescriptions.Add(new SortDescription("IsFavorite", ListSortDirection.Descending));
             view.SortDescriptions.Add(new SortDescription("Word", ListSortDirection.Ascending));
-           
+       
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

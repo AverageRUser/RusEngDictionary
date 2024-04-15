@@ -6,13 +6,16 @@
         xmlns:local="clr-namespace:RusEngDictionary" xmlns:col="clr-namespace:System.Collections;assembly=System.Runtime.Extensions"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-
+  
     <Grid Background="Lavender">
         <ListView Name="dList"  Margin="0,21,0,0" ItemsSource="{Binding items}"  HorizontalContentAlignment="Stretch" SelectedItem="{Binding Selected}" SelectionChanged="dList_SelectionChanged" >
-
+            
             <ListView.View >
                 <GridView>
-                    <GridViewColumn Width="20" DisplayMemberBinding="{Binding Id}"   />
+                    <GridViewColumn Width="20" DisplayMemberBinding="{Binding IsFavorite,UpdateSourceTrigger=PropertyChanged}"   />
+
+
+
                     <GridViewColumn DisplayMemberBinding="{Binding Word}" 
                   Header="Слово" Width="210" />
                     <GridViewColumn DisplayMemberBinding="{Binding Translation}" 
@@ -24,13 +27,8 @@
             </ListView.View>
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Добавить в избранное" Command="{Binding FavorCommand}"  >
-                        <MenuItem.Icon>
-                            <TextBlock Text="*" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                   
-
+                    <MenuItem x:Name="favor" Header="Добавить в избранное" Command="{Binding FavorCommand}"  />
+                    <MenuItem x:Name="unfavor" Header="Удалить из избранного" Command="{Binding UnFavorCommand}"  />
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>

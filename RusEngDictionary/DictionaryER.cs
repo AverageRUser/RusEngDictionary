@@ -15,6 +15,7 @@ namespace RusEngDictionary
         private int id;
         private string translation;
         private string definition;
+        private bool favorite;
         public int Id
         {
             get => id;
@@ -51,8 +52,15 @@ namespace RusEngDictionary
                 NotifyPropertyChanged();
             }
         }
-
-
+        public bool IsFavorite
+        {
+            get => favorite;
+            set
+            {
+                favorite = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
         {
