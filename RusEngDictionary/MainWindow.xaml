@@ -39,7 +39,7 @@
                 <MenuItem Header="Подключение к словарю через базу данных" Command="{Binding DictConnCommand}" />
 
             </MenuItem>
-      
+       
             <TextBox Width="249" Text="{Binding Pattern, UpdateSourceTrigger=PropertyChanged}" >
                 <TextBox.Style>
                     <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">

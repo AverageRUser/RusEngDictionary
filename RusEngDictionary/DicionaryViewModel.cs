@@ -112,7 +112,7 @@ namespace RusEngDictionary
                           else
                           {
                               DictionaryER DictionaryObj = wde.DictionaryObj;
-                              items.Add(DictionaryObj);
+                              items.Add(new DictionaryER {Id= items.Count, Word=DictionaryObj.Word, Translation = DictionaryObj.Translation, Definition = DictionaryObj.Definition });
                           }
 
                       }
@@ -172,7 +172,7 @@ namespace RusEngDictionary
                           conn = new MySqlConnection(connStr);
                           conn.Open();
                           databaseTableName = wdbe.nameTable.Text;
-                          int i = 3;
+                        
 
                           string sql = $"SELECT * FROM {databaseTableName}";
                           // объект для выполнения SQL-запроса
@@ -183,8 +183,8 @@ namespace RusEngDictionary
                           while (reader.Read())
                           {
                               // элементы массива [] - это значения столбцов из запроса SELECT
-                              items.Add(new DictionaryER() { IsFavorite = false, Word = reader[1].ToString(), Translation = reader[2].ToString(), Definition = reader[3].ToString() });
-                              i++;
+                              items.Add(new DictionaryER() { IsFavorite = false, Word = reader[1].ToString(), Translation = reader[2].ToString(), Definition = reader[3].ToString(),Id = items.Count});
+                          
                               //(reader[0].ToString() + " " + reader[1].ToString() + " " + reader[2].ToString());
                           }
 
