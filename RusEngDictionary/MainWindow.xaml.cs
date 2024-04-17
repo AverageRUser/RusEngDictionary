@@ -30,13 +30,14 @@ namespace RusEngDictionary
             InitializeComponent();
             
             DataContext = new DicionaryViewModel();
-
+            
     
     
         }
 
         private void dList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            
             var listBox = sender as ListBox;
             listBox.ScrollIntoView(listBox.SelectedItem);
         }
