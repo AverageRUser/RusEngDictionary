@@ -50,8 +50,31 @@
             <ListView.ContextMenu>
                 <ContextMenu>
                     
-                    <MenuItem x:Name="favor" Header="Добавить в избранное" Command="{Binding FavorCommand}"  />
-                    <MenuItem x:Name="unfavor" Header="Удалить из избранного" Command="{Binding UnFavorCommand}"  />
+                    <MenuItem x:Name="favor" Header="Добавить в избранное" Command="{Binding FavorCommand}"  >
+                        <MenuItem.Style>
+                            <Style TargetType="{x:Type MenuItem}">
+                                <Setter Property="Visibility" Value="Visible"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsFavorite}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </MenuItem.Style>
+                        </MenuItem>
+                    
+                        <MenuItem x:Name="unfavor" Header="Удалить из избранного" Command="{Binding UnFavorCommand}"  >
+                        <MenuItem.Style>
+                            <Style TargetType="{x:Type MenuItem}">
+                                <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsFavorite}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </MenuItem.Style>
+                    </MenuItem>
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>
