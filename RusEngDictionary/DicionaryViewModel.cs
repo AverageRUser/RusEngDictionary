@@ -21,7 +21,7 @@ namespace RusEngDictionary
         MySqlConnection conn = new MySqlConnection(connStr);
  
         public ObservableCollection<DictionaryER> items { get; set; }
-     
+        public ObservableCollection<DictionaryER> favorite { get; set; }
         private RelayCommand addCommand;
         private RelayCommand removeCommand;
         private RelayCommand dictconnCommand;
@@ -29,6 +29,7 @@ namespace RusEngDictionary
         private RelayCommand unfavorCommand;
         string _pattern;
         string databaseTableName;
+    
    
         //Свойство для получения и установки _pattern
         public string Pattern
@@ -42,14 +43,14 @@ namespace RusEngDictionary
                 Selected = items.FirstOrDefault(s =>   s.Word.StartsWith(Pattern)    );
             }
         }
-
+    
         DictionaryER _selected;
         public DictionaryER Selected
         {
             get => _selected;
             set => Set(ref _selected, value);
         }
-        
+    
         public void Set<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
         {
             field = value;
@@ -65,7 +66,7 @@ namespace RusEngDictionary
                   (favorCommand = new RelayCommand(obj =>
                   {
                       items[_selected.Id].IsFavorite = true;
-                     
+                      favorite.Add(items[_selected.Id]);
 
                   }));
             }
@@ -80,8 +81,7 @@ namespace RusEngDictionary
                   (unfavorCommand = new RelayCommand(obj =>
                   {
                       items[_selected.Id].IsFavorite = false;
-                      
-
+                      favorite.Remove(_selected);
 
                   }));
             }
@@ -206,8 +206,12 @@ namespace RusEngDictionary
                 new DictionaryER() { Word = "Album", Translation = "Альбом", Id =2 }
 
             };
+            favorite = new ObservableCollection<DictionaryER>
+            {
           
-           
+
+            };
+
 
             view = (CollectionView)CollectionViewSource.GetDefaultView(items);
             view.SortDescriptions.Add(new SortDescription("IsFavorite", ListSortDirection.Descending));

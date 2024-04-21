@@ -42,16 +42,18 @@ namespace RusEngDictionary
             listBox.ScrollIntoView(listBox.SelectedItem);
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void favoriteList_Click(object sender, RoutedEventArgs e)
         {
-            favor.Visibility = Visibility.Collapsed;
-            unfavor.Visibility = Visibility.Visible;
+            fList.Visibility = Visibility.Visible;
+            favoriteList.Visibility = Visibility.Collapsed;
+            CloseFavorList.Visibility = Visibility.Visible;
         }
 
-        private void unfavor_Click(object sender, RoutedEventArgs e)
+        private void CloseFavorList_Click(object sender, RoutedEventArgs e)
         {
-           favor.Visibility = Visibility.Visible;
-            unfavor.Visibility = Visibility.Collapsed;
+            fList.Visibility = Visibility.Collapsed;
+            favoriteList.Visibility = Visibility.Visible;
+            CloseFavorList.Visibility = Visibility.Collapsed;
         }
     }
 }
