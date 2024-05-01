@@ -8,74 +8,97 @@
         Title="MainWindow" Height="450" Width="800">
 
     <Grid Background="Lavender">
-        <ListView x:Name="dList"  Margin="0,21,0,0" ItemsSource="{Binding items}"  HorizontalContentAlignment="Stretch" SelectedItem="{Binding Selected}" SelectionChanged="dList_SelectionChanged"  >
-            <ListView.Resources>
-                <Style TargetType="{x:Type ListViewItem}">
+        <TabControl Margin="0,15,0,0"  >
+            <TabItem  Margin="-2,4,-2,0">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Rectangle Height="10" Width="10" Fill="Black" />
+                        <TextBlock Margin="3">Словарь</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <ListView x:Name="dList" ItemsSource="{Binding items}"  HorizontalContentAlignment="Stretch" SelectedItem="{Binding Selected}" SelectionChanged="dList_SelectionChanged"  >
+                        <ListView.Resources>
+                            <Style TargetType="{x:Type ListViewItem}">
 
-                    <Setter Property="BorderBrush" Value="BlanchedAlmond"/>
-                    <Setter Property="BorderThickness" Value="2"/>
-                    <Style.Triggers>
+                                <Setter Property="BorderBrush" Value="BlanchedAlmond"/>
+                                <Setter Property="BorderThickness" Value="2"/>
+                                <Style.Triggers>
 
-                        <DataTrigger Binding="{Binding IsFavorite}" Value="True">
-                            <Setter Property="Background" Value="Red" />
-                            <Setter Property="BorderBrush" Value="Goldenrod"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsFavorite}" Value="False">
-                            <Setter Property="Background" Value="White" />
+                                    <DataTrigger Binding="{Binding IsFavorite}" Value="True">
+                                        <Setter Property="Background" Value="Red" />
+                                        <Setter Property="BorderBrush" Value="Goldenrod"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsFavorite}" Value="False">
+                                        <Setter Property="Background" Value="White" />
 
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
 
-            </ListView.Resources>
+                        </ListView.Resources>
 
-            <ListView.View >
+                        <ListView.View >
 
-                <GridView x:Name="elem">
-                    <GridViewColumn DisplayMemberBinding="{Binding Word}" 
-                  Header="Слово" Width="210" />
-                    <GridViewColumn DisplayMemberBinding="{Binding Translation}" 
-                  Header="Перевод" Width="210"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Definition}" 
-                  Header="Значение"  Width="334"/>
-                </GridView>
-            </ListView.View>
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem x:Name="favor" Header="Добавить в избранное" Command="{Binding FavorCommand}" >
-                    </MenuItem>
-                </ContextMenu>
-            </ListView.ContextMenu>
-        </ListView>
-        
-        <ListView x:Name="fList" ItemsSource="{Binding favorite}" Margin="0,206,0,0" SelectedItem="{Binding Selected}" Visibility="Collapsed" >
-           
-            <ListView.View >
-                <GridView  >
-                    <GridViewColumn  DisplayMemberBinding="{Binding Word}" 
-      Width="210" />
-                    <GridViewColumn DisplayMemberBinding="{Binding Translation}" 
-       Width="210"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Definition}" 
-          Width="334"/>
+                            <GridView x:Name="elem">
+                                <GridViewColumn DisplayMemberBinding="{Binding Word}" 
+            Header="Слово" Width="210" />
+                                <GridViewColumn DisplayMemberBinding="{Binding Translation}" 
+            Header="Перевод" Width="210"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Definition}" 
+            Header="Значение"  Width="334"/>
+                            </GridView>
+                        </ListView.View>
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem x:Name="favor" Header="Добавить в избранное" Command="{Binding FavorCommand}" >
+                                </MenuItem>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
 
-                </GridView>
-            </ListView.View>
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Удалить из избранного" Command="{Binding UnFavorCommand}"   />
+                    </ListView>
 
-                </ContextMenu>
-            </ListView.ContextMenu>
-        </ListView>
-        <Menu Height="20" VerticalAlignment="Top" Margin="0,1,0,0" >
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Margin="-2,4,-2,0" >
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Height="10" Width="10" Fill="Black"  />
+                        <TextBlock Margin="3">Избранное</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <ListView x:Name="fList" ItemsSource="{Binding favorite}" SelectedItem="{Binding Selected}"  >
+
+                        <ListView.View >
+                            <GridView  >
+                                <GridViewColumn  DisplayMemberBinding="{Binding Word}" 
+Width="210" />
+                                <GridViewColumn DisplayMemberBinding="{Binding Translation}" 
+ Width="210"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Definition}" 
+    Width="334"/>
+
+                            </GridView>
+                        </ListView.View>
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Удалить из избранного" Command="{Binding UnFavorCommand}"   />
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                    </ListView>
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
+
+
+        <Menu Height="20" VerticalAlignment="Top" >
             <MenuItem Header="Меню">
                 <MenuItem Header="Добавить в словарь" Command="{Binding AddCommand}"  />
                 <MenuItem Header="Удалить из словаря" Command="{Binding RemoveCommand}" />
                 <MenuItem Header="Подключение к словарю через базу данных" Command="{Binding DictConnCommand}" />
-                <MenuItem x:Name="favoriteList" Header="Избранные элементы " Click="favoriteList_Click" />
             </MenuItem>
-            
+
             <TextBox Width="249" Text="{Binding Pattern, UpdateSourceTrigger=PropertyChanged}" >
                 <TextBox.Style>
                     <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
@@ -100,7 +123,7 @@
                     </Style>
                 </TextBox.Style>
             </TextBox>
-            <Button x:Name="CloseFavorList" Content="Закрыть избранное" FontSize="11" Click="CloseFavorList_Click" Visibility="Collapsed"></Button>
+
         </Menu>
     </Grid>
 </Window>

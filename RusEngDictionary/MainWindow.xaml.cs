@@ -41,19 +41,6 @@ namespace RusEngDictionary
             var listBox = sender as ListBox;
             listBox.ScrollIntoView(listBox.SelectedItem);
         }
-
-        private void favoriteList_Click(object sender, RoutedEventArgs e)
-        {
-            fList.Visibility = Visibility.Visible;
-            favoriteList.Visibility = Visibility.Collapsed;
-            CloseFavorList.Visibility = Visibility.Visible;
-        }
-
-        private void CloseFavorList_Click(object sender, RoutedEventArgs e)
-        {
-            fList.Visibility = Visibility.Collapsed;
-            favoriteList.Visibility = Visibility.Visible;
-            CloseFavorList.Visibility = Visibility.Collapsed;
-        }
+      
     }
 }
