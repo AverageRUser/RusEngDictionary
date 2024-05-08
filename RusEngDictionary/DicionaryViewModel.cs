@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace RusEngDictionary
 {
@@ -18,7 +20,7 @@ namespace RusEngDictionary
     {
         static string connStr = null;
         CollectionView view;
-        MySqlConnection conn = new MySqlConnection(connStr);
+       public MySqlConnection conn = new MySqlConnection(connStr);
  
         public ObservableCollection<DictionaryER> items { get; set; }
         public ObservableCollection<DictionaryER> favorite { get; set; }
@@ -28,9 +30,20 @@ namespace RusEngDictionary
         private RelayCommand favorCommand;
         private RelayCommand unfavorCommand;
         string _pattern;
+        private bool isConnected;
+        Brush _color;
         string databaseTableName;
-    
-   
+    public bool ColorConn
+        {
+            get => isConnected;
+            set
+            {
+                isConnected = value;
+                OnPropertyChanged("ColorConn");
+
+            }
+        }
+  
         //Свойство для получения и установки _pattern
         public string Pattern
         {
@@ -65,6 +78,7 @@ namespace RusEngDictionary
                 return favorCommand ??
                   (favorCommand = new RelayCommand(obj =>
                   {
+                    
                       items[_selected.Id].IsFavorite = true;
                       favorite.Add(items[_selected.Id]);
 
@@ -134,7 +148,8 @@ namespace RusEngDictionary
                       {
                           if (conn.State == ConnectionState.Open && connStr != null)
                           {
-                              string query = $"DELETE FROM dictionaryER WHERE Word = '{_selected.Word}'";
+                              
+                              string query = $"DELETE FROM {databaseTableName} WHERE Word = '{_selected.Word}'";
                               MySqlCommand command = new MySqlCommand(query, conn);
                               command.ExecuteNonQuery();
                               items.RemoveAt(_selected.Id);
@@ -167,28 +182,39 @@ namespace RusEngDictionary
                       WindowDBentry wdbe = new WindowDBentry();
                       if (wdbe.ShowDialog() == true)
                       {
-                          //  DictionaryER DictionaryObj = wdbe.DictionaryObj;
-                          connStr = $"server=localhost;user=root;database={wdbe.databaseName.Text};password={wdbe.password.Text};";
-                          conn = new MySqlConnection(connStr);
-                          conn.Open();
-                          databaseTableName = wdbe.nameTable.Text;
-                        
-
-                          string sql = $"SELECT * FROM {databaseTableName}";
-                          // объект для выполнения SQL-запроса
-                          MySqlCommand command1 = new MySqlCommand(sql, conn);
-                          // объект для чтения ответа сервера
-                          MySqlDataReader reader = command1.ExecuteReader();
-                          // читаем результат
-                          while (reader.Read())
+                          try
                           {
-                              // элементы массива [] - это значения столбцов из запроса SELECT
-                              items.Add(new DictionaryER() { IsFavorite = false, Word = reader[1].ToString(), Translation = reader[2].ToString(), Definition = reader[3].ToString(),Id = items.Count});
-                          
-                              //(reader[0].ToString() + " " + reader[1].ToString() + " " + reader[2].ToString());
-                          }
+                              //  DictionaryER DictionaryObj = wdbe.DictionaryObj;
+                              connStr = $"server={wdbe.server.Text};user=root;database={wdbe.databaseName.Text};password={wdbe.password.Text};";
+                              conn = new MySqlConnection(connStr);
+                              conn.Open();
+                              databaseTableName = wdbe.nameTable.Text;
 
-                          reader.Close(); // закрываем reader
+
+                              string sql = $"SELECT * FROM {databaseTableName}";
+                              // объект для выполнения SQL-запроса
+                              MySqlCommand command1 = new MySqlCommand(sql, conn);
+                              // объект для чтения ответа сервера
+                              MySqlDataReader reader = command1.ExecuteReader();
+                              // читаем результат
+                              while (reader.Read())
+                              {
+                                  // элементы массива [] - это значения столбцов из запроса SELECT
+                                  items.Add(new DictionaryER() { IsFavorite = false, Word = reader[1].ToString(), Translation = reader[2].ToString(), Definition = reader[3].ToString(), Id = items.Count });
+
+                                  //(reader[0].ToString() + " " + reader[1].ToString() + " " + reader[2].ToString());
+                              }
+
+                              reader.Close(); // закрываем reader
+
+                              MessageBox.Show("Данные успешно добавленны в словарь");
+                              ColorConn = true;
+
+                          }
+                          catch(Exception ex) 
+                          {
+                              MessageBox.Show("Не удалось подключиться к базе данных","Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                          }
                       }
 
                   }));
@@ -212,6 +238,7 @@ namespace RusEngDictionary
 
             };
 
+       
 
             view = (CollectionView)CollectionViewSource.GetDefaultView(items);
             view.SortDescriptions.Add(new SortDescription("IsFavorite", ListSortDirection.Descending));
@@ -220,11 +247,14 @@ namespace RusEngDictionary
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+     
+        
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
+        
     }
     
     

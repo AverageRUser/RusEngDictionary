@@ -30,7 +30,7 @@ namespace RusEngDictionary
             InitializeComponent();
             
             DataContext = new DicionaryViewModel();
-            
+          
     
     
         }

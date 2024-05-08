@@ -3,13 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RusEngDictionary" xmlns:col="clr-namespace:System.Collections;assembly=System.Runtime.Extensions"
+        xmlns:local="clr-namespace:RusEngDictionary" xmlns:col="clr-namespace:System.Collections;assembly=System.Runtime.Extensions" xmlns:draw="clr-namespace:System.Drawing;assembly=System.Drawing"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
     <Grid Background="Lavender">
         <TabControl Margin="0,15,0,0"  >
-            <TabItem  Margin="-2,4,-2,0">
+            <TabItem  Margin="-2,4,-2,0" >
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <Rectangle Height="10" Width="10" Fill="Black" />
@@ -123,7 +123,26 @@ Width="210" />
                     </Style>
                 </TextBox.Style>
             </TextBox>
+            <Image   >
+                <Image.Style>
+                    <Style TargetType="Image" >
 
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ColorConn}" Value="True">
+                                <Setter Property="Source"  Value="/icons/correct.png" />
+                                <Setter Property="ToolTip" Value="База данных подключена"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ColorConn}" Value="False">
+                                <Setter Property="Source" Value="/icons/error.png" />
+                                <Setter Property="ToolTip" Value="База данных не подключена. Добавленные данные не будут сохранены"/>
+                            </DataTrigger>
+
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+
+            </Image>
+         
         </Menu>
     </Grid>
 </Window>

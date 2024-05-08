@@ -14,7 +14,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="icons\correct.png" />
+    <None Remove="icons\error.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MySqlConnector" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="icons\correct.png" />
+    <Resource Include="icons\error.png" />
   </ItemGroup>
 
 </Project>

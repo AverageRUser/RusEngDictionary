@@ -14,5 +14,7 @@
         <Label Content="Пароль" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top"/>
         <Button Content="Подключиться" HorizontalAlignment="Left" Margin="295,190,0,0" VerticalAlignment="Top" Width="91" Click="Button_Click"/>
         <TextBox x:Name="password"  HorizontalAlignment="Left" Margin="10,157,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+        <Label Content="IP сервера" HorizontalAlignment="Left" Margin="196,17,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="server"  HorizontalAlignment="Left" Margin="196,48,0,0" TextWrapping="Wrap" Text="localhost" VerticalAlignment="Top" Width="120" ToolTip="По умолчанию localhost"/>
     </Grid>
 </Window>
