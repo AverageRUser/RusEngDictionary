@@ -8,12 +8,12 @@
         Title="MainWindow" Height="450" Width="800">
 
     <Grid Background="Lavender">
-        <TabControl Margin="0,15,0,0"  >
+        <TabControl x:Name="TabDict" Margin="0,15,0,0"  >
             <TabItem  Margin="-2,4,-2,0" >
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <Rectangle Height="10" Width="10" Fill="Black" />
-                        <TextBlock Margin="3">Словарь</TextBlock>
+                        <TextBlock Margin="3">Новый Словарь</TextBlock>
                     </StackPanel>
                 </TabItem.Header>
                 <TabItem.Content>
@@ -89,6 +89,42 @@ Width="210" />
                     </ListView>
                 </TabItem.Content>
             </TabItem>
+            <TabItem Header="{Binding DBTabHeader}" >
+                <TabItem.Style>
+                    <Style TargetType="TabItem" >
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding visibleDB}" Value="True">
+                             
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding visibleDB}" Value="False">
+
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+
+                        </Style.Triggers>
+                    </Style>
+                </TabItem.Style>
+                <TabItem.Content>
+                    <ListView  ItemsSource="{Binding DBitems}"  HorizontalContentAlignment="Stretch" SelectedItem="{Binding Selected}" SelectionChanged="dList_SelectionChanged"  >
+                        <ListView.View >
+
+                            <GridView >
+                                <GridViewColumn DisplayMemberBinding="{Binding Word}" 
+Header="Слово" Width="210" />
+                                <GridViewColumn DisplayMemberBinding="{Binding Translation}" 
+Header="Перевод" Width="210"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Definition}" 
+Header="Значение"  Width="334"/>
+                            </GridView>
+                        </ListView.View>
+                       
+
+                    </ListView>
+
+                </TabItem.Content>
+            </TabItem>
+        
         </TabControl>
 
 

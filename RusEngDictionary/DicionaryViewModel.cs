@@ -21,9 +21,9 @@ namespace RusEngDictionary
         static string connStr = null;
         CollectionView view;
        public MySqlConnection conn = new MySqlConnection(connStr);
- 
-        public ObservableCollection<DictionaryER> items { get; set; }
-        public ObservableCollection<DictionaryER> favorite { get; set; }
+        public ObservableCollection<DictionaryER> DBitems { get; set; } = new ObservableCollection<DictionaryER>();
+        public ObservableCollection<DictionaryER> items { get; set; } 
+        public ObservableCollection<DictionaryER> favorite { get; set; } = new ObservableCollection<DictionaryER>();
         private RelayCommand addCommand;
         private RelayCommand removeCommand;
         private RelayCommand dictconnCommand;
@@ -31,9 +31,31 @@ namespace RusEngDictionary
         private RelayCommand unfavorCommand;
         string _pattern;
         private bool isConnected;
+        private bool isVisibleDBtable;
+        private string _dbTabHeader;
         Brush _color;
         string databaseTableName;
-    public bool ColorConn
+        public string DBTabHeader
+        {
+            get => _dbTabHeader;
+            set
+            {
+                _dbTabHeader = value;
+                OnPropertyChanged("DBTabHeader");
+
+            }
+        }
+        public bool visibleDB
+        {
+            get => isVisibleDBtable;
+            set
+            {
+                isVisibleDBtable = value;
+                OnPropertyChanged("visibleDB");
+
+            }
+        }
+        public bool ColorConn
         {
             get => isConnected;
             set
@@ -121,7 +143,7 @@ namespace RusEngDictionary
                               string query = $"INSERT {databaseTableName} (Word,Translation,Definitions) VALUES ('{DictionaryObj.Word}', '{DictionaryObj.Translation}','{DictionaryObj.Definition}')";
                               MySqlCommand command = new MySqlCommand(query, conn);
                               command.ExecuteNonQuery();
-                              items.Add(DictionaryObj);
+                              DBitems.Add(DictionaryObj);
                           }
                           else
                           {
@@ -152,7 +174,7 @@ namespace RusEngDictionary
                               string query = $"DELETE FROM {databaseTableName} WHERE Word = '{_selected.Word}'";
                               MySqlCommand command = new MySqlCommand(query, conn);
                               command.ExecuteNonQuery();
-                              items.RemoveAt(_selected.Id);
+                              DBitems.RemoveAt(_selected.Id);
                           }
                           else
                           {
@@ -196,11 +218,12 @@ namespace RusEngDictionary
                               MySqlCommand command1 = new MySqlCommand(sql, conn);
                               // объект для чтения ответа сервера
                               MySqlDataReader reader = command1.ExecuteReader();
+                              
                               // читаем результат
                               while (reader.Read())
                               {
                                   // элементы массива [] - это значения столбцов из запроса SELECT
-                                  items.Add(new DictionaryER() { IsFavorite = false, Word = reader[1].ToString(), Translation = reader[2].ToString(), Definition = reader[3].ToString(), Id = items.Count });
+                                  DBitems.Add(new DictionaryER() { IsFavorite = false, Word = reader[1].ToString(), Translation = reader[2].ToString(), Definition = reader[3].ToString(), Id = items.Count });
 
                                   //(reader[0].ToString() + " " + reader[1].ToString() + " " + reader[2].ToString());
                               }
@@ -209,7 +232,8 @@ namespace RusEngDictionary
 
                               MessageBox.Show("Данные успешно добавленны в словарь");
                               ColorConn = true;
-
+                              DBTabHeader = databaseTableName;
+                              visibleDB = true;
                           }
                           catch(Exception ex) 
                           {
@@ -232,11 +256,7 @@ namespace RusEngDictionary
                 new DictionaryER() { Word = "Album", Translation = "Альбом", Id =2 }
 
             };
-            favorite = new ObservableCollection<DictionaryER>
-            {
-          
-
-            };
+         
 
        
 
