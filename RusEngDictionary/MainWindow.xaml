@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RusEngDictionary" xmlns:col="clr-namespace:System.Collections;assembly=System.Runtime.Extensions" xmlns:draw="clr-namespace:System.Drawing;assembly=System.Drawing"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="455" Width="800">
 
     <Grid Background="Lavender">
-        <TabControl x:Name="TabDict" Margin="0,15,0,0"  >
-            <TabItem  Margin="-2,4,-2,0" >
+        <TabControl x:Name="TabDict" Margin="0,20,0,0"  >
+            <TabItem  >
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <Rectangle Height="10" Width="10" Fill="Black" />
@@ -60,7 +60,7 @@
 
                 </TabItem.Content>
             </TabItem>
-            <TabItem Margin="-2,4,-2,0" >
+            <TabItem  >
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <Ellipse Height="10" Width="10" Fill="Black"  />
